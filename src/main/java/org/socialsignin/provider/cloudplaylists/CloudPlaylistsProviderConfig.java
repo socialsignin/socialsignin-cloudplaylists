@@ -18,11 +18,8 @@ package org.socialsignin.provider.cloudplaylists;
 import org.socialsignin.provider.AbstractProviderConfig;
 import org.socialsignin.springsocial.security.CloudPlaylistsConnectInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.social.cloudplaylists.api.CloudPlaylists;
-import org.springframework.social.cloudplaylists.connect.CloudPlaylistsConnectionFactory;
-import org.springframework.social.connect.ConnectionFactory;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.support.ConnectionFactoryRegistry;
@@ -38,21 +35,6 @@ public class CloudPlaylistsProviderConfig extends
 	@Autowired(required = false)
 	private CloudPlaylistsConnectInterceptor cloudplaylistsConnectInterceptor;
 
-	@Value("${cloudplaylists.consumerKey}")
-	private String cloudplaylistsConsumerKey;
-
-	@Value("${cloudplaylists.consumerSecret}")
-	private String cloudplaylistsConsumerSecret;
-
-	@Value("${cloudplaylists.oauthTokenUrl}")
-	private String cloudplaylistsOAuthTokenUrl;
-
-	@Value("${cloudplaylists.oauthAuthorizeUrl}")
-	private String cloudplaylistsOAuthAuthorizeUrl;
-
-	@Value("${cloudplaylists.oauthApiBaseUrl}")
-	private String cloudplaylistsOAuthApiBaseUrl;
-
 	public CloudPlaylistsProviderConfig() {
 		super();
 	}
@@ -60,75 +42,23 @@ public class CloudPlaylistsProviderConfig extends
 	public CloudPlaylistsProviderConfig(String cloudplaylistsConsumerKey,
 			CloudPlaylists authenticatedApi) {
 		super(authenticatedApi);
-		this.cloudplaylistsConsumerKey = cloudplaylistsConsumerKey;
 	}
 
-	public CloudPlaylistsProviderConfig(String cloudplaylistsOAuthApiBaseUrl,
-			String cloudplaylistsConsumerKey,
-			String cloudplaylistsConsumerSecret,
+	public CloudPlaylistsProviderConfig(
+			ConnectionRepository connectionRepository) {
+		super(connectionRepository);
+	}
+
+	public CloudPlaylistsProviderConfig(
 			ConnectionRepository connectionRepository,
-			ConnectionFactoryRegistry connectionFactoryRegistry) {
-		super(connectionRepository, connectionFactoryRegistry);
-		this.cloudplaylistsConsumerKey = cloudplaylistsConsumerKey;
-		this.cloudplaylistsConsumerSecret = cloudplaylistsConsumerSecret;
-		this.cloudplaylistsOAuthApiBaseUrl = cloudplaylistsOAuthApiBaseUrl;
+			UsersConnectionRepository usersConnectionRepository) {
+		super(connectionRepository, usersConnectionRepository);
 
 	}
 
-	public CloudPlaylistsProviderConfig(String cloudplaylistsOAuthApiBaseUrl,
-			String cloudplaylistsConsumerKey,
-			String cloudplaylistsConsumerSecret,
-			ConnectionRepository connectionRepository,
-			UsersConnectionRepository usersConnectionRepository,
-			ConnectionFactoryRegistry connectionFactoryRegistry) {
-		super(connectionRepository, usersConnectionRepository,
-				connectionFactoryRegistry);
-		this.cloudplaylistsConsumerKey = cloudplaylistsConsumerKey;
-		this.cloudplaylistsConsumerSecret = cloudplaylistsConsumerSecret;
-		this.cloudplaylistsOAuthApiBaseUrl = cloudplaylistsOAuthApiBaseUrl;
-
-	}
-
-	public CloudPlaylistsProviderConfig(String cloudplaylistsOAuthApiBaseUrl,
-			String cloudplaylistsConsumerKey,
-			String cloudplaylistsConsumerSecret, String userId,
-			UsersConnectionRepository usersConnectionRepository,
-			ConnectionFactoryRegistry connectionFactoryRegistry) {
-		super(userId, usersConnectionRepository, connectionFactoryRegistry);
-		this.cloudplaylistsConsumerKey = cloudplaylistsConsumerKey;
-		this.cloudplaylistsConsumerSecret = cloudplaylistsConsumerSecret;
-		this.cloudplaylistsOAuthApiBaseUrl = cloudplaylistsOAuthApiBaseUrl;
-	}
-
-	public void setcloudplaylistsConsumerKey(String cloudplaylistsConsumerKey) {
-		this.cloudplaylistsConsumerKey = cloudplaylistsConsumerKey;
-	}
-
-	public void setcloudplaylistsConsumerSecret(
-			String cloudplaylistsConsumerSecret) {
-		this.cloudplaylistsConsumerSecret = cloudplaylistsConsumerSecret;
-	}
-
-	public void setcloudplaylistsOAuthTokenUrl(
-			String cloudplaylistsOAuthTokenUrl) {
-		this.cloudplaylistsOAuthTokenUrl = cloudplaylistsOAuthTokenUrl;
-	}
-
-	public void setcloudplaylistsOAuthAuthorizeUrl(
-			String cloudplaylistsOAuthAuthorizeUrl) {
-		this.cloudplaylistsOAuthAuthorizeUrl = cloudplaylistsOAuthAuthorizeUrl;
-	}
-
-	public void setcloudplaylistsOAuthApiBaseUrl(
-			String cloudplaylistsOAuthApiBaseUrl) {
-		this.cloudplaylistsOAuthApiBaseUrl = cloudplaylistsOAuthApiBaseUrl;
-	}
-
-	@Override
-	protected ConnectionFactory<CloudPlaylists> createConnectionFactory() {
-		return new CloudPlaylistsConnectionFactory(cloudplaylistsConsumerKey,
-				cloudplaylistsConsumerSecret, cloudplaylistsOAuthAuthorizeUrl,
-				cloudplaylistsOAuthTokenUrl, cloudplaylistsOAuthApiBaseUrl);
+	public CloudPlaylistsProviderConfig(String userId,
+			UsersConnectionRepository usersConnectionRepository) {
+		super(userId, usersConnectionRepository);
 	}
 
 	@Override
